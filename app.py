@@ -17,7 +17,6 @@ def tampilkan_data():
     data = col.find()
     return render_template('stok.html', XD = data)
 
-
 @app.route('/insert',methods=['POST'])
 def insert():
     nama = request.form.get("nama")
