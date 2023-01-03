@@ -12,10 +12,14 @@ col = db['item']
 order = db['transaksi']
 
 
-# @app.route('/insert',methods=['POST','GET'])
+@app.route('/')
+def tampilkan_data():
+    data = col.find()
+    return render_template('stok.html', XD = data)
+
+
 @app.route('/insert',methods=['POST'])
 def insert():
-    # if request.method=='POST':
     nama = request.form.get("nama")
     tipe = request.form.get('tipe')
     harga = int(request.form.get("harga"))
@@ -31,13 +35,6 @@ def insert():
     }
     col.insert_one(data)
     return redirect('/')
-    # else:
-    #     return render_template('insert.html')
-
-@app.route('/')
-def tampilkan_data():
-    data = col.find()
-    return render_template('stok.html', XD = data)
 
 @app.route('/edit/<string:_id>',methods=['GET','POST'])
 def edit(_id):
@@ -76,13 +73,11 @@ def hapus(_id):
         })
     return redirect('/')
 
-#proses pembelian
 @app.route('/beli')
 def beli():
-    cek = col.find()
     data = col.find()
     riwayat = order.find()
-    return render_template('beli.html',XD = data,cek = cek,RY = riwayat)
+    return render_template('beli.html',XD = data,RY = riwayat)
 
 @app.route('/beli',methods=['POST'])
 def proses_beli():
@@ -90,22 +85,21 @@ def proses_beli():
     tipe = request.form.get('tipe')
     jumlah = int(request.form.get("jumlah"))
     data = col.find_one({'nama':nama})
-
-    # if data['jumlah'] < jumlah:
-    #     return 'stock habis'
-    
-    # else:
     jumlah_baru = data.get('jumlah') - jumlah
     tipe = data.get('tipe')
     harga = data.get('harga') * jumlah
     col.update_one({'nama':nama},{'$set':{'jumlah':jumlah_baru}})
+
     now = datetime.datetime.now()
+    tgl = '%d'+'/'+'%b'+'/'+'%Y'
+    jam = '%H'+':'+'%M'
+
     baru = {
         "nama": nama,
         "tipe":tipe,
         "harga": harga,
         "jumlah":jumlah,
-        "waktu": now.strftime('%x')
+        "waktu": now.strftime('Jam : '+jam+' | '+'Tanggal : '+tgl)
     }
     order.insert_one(baru)
 
