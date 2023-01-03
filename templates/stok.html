@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Data</title>
+    <link rel="stylesheet" href="/static/css/stok.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+<body class="bg-slate-300">
+    <div class="tbl-menu">
+        <a href="{{url_for('beli')}}" class="btn btn-success">Pembelian</a>
+        <a href="http://127.0.0.1:5000/" class="btn btn-success">Data Barang</a>
+    </div>
+    <div class="bungkus-judul">
+        <h2 class="judul text-center pb-10">Data Semua Barang</h2>
+    </div>
+    <div class="isi flex justify-around">
+        <div class="tabel-stok w-3/5 bg-white p-3 rounded-lg drop-shadow-md">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nomor Seri</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tipe</th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Stok</th>
+                        <th scope="col">Waktu</th>
+                        <th scope="col" colspan="2">Menu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for row in XD%}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{row._id}}</td>
+                        <td>{{row.nama}}</td>
+                        <td>{{row.tipe}}</td>
+                        <td>{{row.harga}}</td>
+                        <td>{{row.jumlah}}</td>
+                        <td>{{row.waktu}}</td>
+                        <td><a href="{{url_for('edit',_id=row._id)}}" class="btn btn-primary">Edit</a></td>
+                        <td><a href="{{url_for('hapus',_id=row._id)}}" class="btn btn-primary">Hapus</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="tambah-barang" class="data-stok bg-white p-3 border-slate-400 rounded-lg drop-shadow-md w-2/6 h-insertHeight">
+            <form method="POST" action="{{url_for('insert')}}">
+                <div class="mb-3">
+                    <label for="" class="form-label">Nama Item</label>
+                    <input type="text" class="form-control" name="nama">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Tipe Item</label>
+                    <input type="text" class="form-control" name="tipe">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Harga</label>
+                    <input type="number" class="form-control" name="harga">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Jumlah</label>
+                    <input type="number" class="form-control" name="jumlah">
+                </div>
+                <div class="tblTambah text-center">
+                    <button type="submit" class="px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-lg shadow-sm">Tambah Barang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

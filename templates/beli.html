@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelian</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="btn-menu">
+        <a href="{{url_for('beli')}}" class="btn btn-success">Pembelian</a>
+        <a href="http://127.0.0.1:5000/" class="btn btn-success">Data Barang</a>
+    </div>
+    <div>
+        <div class="bungkus-judul">
+            <h2 class="judul">Pembelian Item</h2>
+        </div>
+        <div>
+            <form method="POST" action="{{url_for('beli')}}">
+                <label for="nama">Nama :</label>
+                <select class="form-select mt-3" name="nama" id="nama">
+                    {%for row in XD%}
+                    <option value="{{row.nama}}">{{row.nama}} | Stock : {{row.jumlah}}</option>
+                    {% endfor %}
+                </select>
+                <label for="jumlah">Jumlah :</label>
+                <input type="number" id="jumlah" name="jumlah">
+                <button type="submit" value="submit">Beli</button>
+            </form>
+        </div>
+    </div>
+    <div class="rincian">
+        <div class="judul2">
+            <h3>Riwayat Transaksi</h3>
+        </div>
+        <div class="tabel">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nomor Seri</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tipe</th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for ro in RY%}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <th scope="row">{{ro._id}}</th>
+                        <td>{{ro.nama}}</td>
+                        <td>{{ro.tipe}}</td>
+                        <td>{{ro.harga}}</td>
+                        <td>{{ro.jumlah}}</td>
+                        <td>{{ro.waktu}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="cekStok">
+        <button id="btn">Cek Stock</button>
+        <div id="cek" style="display: none;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nomor Seri</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tipe</th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Stok</th>
+                        <th scope="col">Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for cek in cek%}
+                    <tr>
+                        <th scope="row">{{cek._id}}</th>
+                        <td>{{cek.nama}}</td>
+                        <td>{{cek.tipe}}</td>
+                        <td>{{cek.harga}}</td>
+                        <td>{{cek.jumlah}}</td>
+                        <td>{{cek.waktu}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#cek').hide()
+            $("#btn").click(function(){
+                $("#cek").slideToggle('fast');
+            });
+        });
+    </script>
+</body>
+</html>
